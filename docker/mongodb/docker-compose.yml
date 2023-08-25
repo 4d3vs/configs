@@ -1,0 +1,31 @@
+version: '3.7'
+
+networks:
+  mongonet:
+    driver: bridge
+  
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123
+    restart: always
+    networks: 
+      - mongonet
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    ports:
+      - 8888:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+    depends_on: 
+      - mongodb
+    restart: always
+    networks: 
+      - mongonet
